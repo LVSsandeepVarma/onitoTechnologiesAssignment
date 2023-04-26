@@ -31,4 +31,10 @@ router.post("/test",async (req,res)=>{
     })
     res.status(200).send("successful")
 })
+
+router.get("/registers", async (req,res)=>{
+    const registersData = await userModel.find()
+    console.log(registersData)
+    res.status(200).send({data:registersData})
+})
 module.exports = router
