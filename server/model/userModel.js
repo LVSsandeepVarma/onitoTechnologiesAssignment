@@ -19,7 +19,7 @@ const userSchema= new Schema({
     pincode:{type:Number},
     occupation:{type:String},
     religion:{type:String},
-    maritialStatus:{type:String, enum:["Married", "Single"]},
+    maritialStatus:{type:String, enum:["Married", "Single","Other"]},
     BloodGroup:{type:String},
     nationality:{type:String},
 })
