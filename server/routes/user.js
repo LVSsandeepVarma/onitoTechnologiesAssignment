@@ -15,9 +15,13 @@ router.post("/register", (req,res)=>{
     console.log(req.body)
     if(req.body.name != "" && req.body.DOB !="" && req.body.gender !=""){
         const userData = {...req.body}
-        console.log(userData)
-        userModel.create(userData)
-        res.status(200).send({data:"stored successfully"})
+        userModel.create(userData).then(()=>{
+            console.log(userData)
+            res.status(200).send({data:"stored successfully"})
+        }).catch((err)=>{
+            res.status(400).send({data:err})
+        })
+
     }
     else{
         res.status(400).send({data: "please fill all the mandatory fields"})
