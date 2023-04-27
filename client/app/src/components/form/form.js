@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { Select, initTE } from "tw-elements";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+// for tailwind elements 
 initTE({ Select });
 
+//*** */ schema for form validation only for required fields !! ***
 const schema = yup.object({
     name: yup.string().required(),
     DOB: yup.string().required(),
@@ -24,20 +26,43 @@ const schema = yup.object({
 }).required();
 
 function Form() {
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
+    const { register, handleSubmit, formState: { errors } , reset} = useForm({ 
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name:"",
+            DOB:"",
+            gender:"",
+            mobile:"",
+            govtIDType:"Aadhar",
+            govtId:"",
+            guardianType:"Father",
+            guardianName:"",
+            email:"",
+            emergencyContact:"",
+            address:"",
+            state:"",
+            city:"",
+            country:"",
+            pincode:"",
+            occupation:"",
+            religion:"religionOne",
+            maritialStatus:"Married",
+            BloodGroup:"O+",
+            nationality:""
+        }
+     });
     const navigate = useNavigate();
     const onSubmit = (data) => {
-        console.log(data)
         axios.post("http://localhost:3000/user/register", data = data).then((res) => navigate("/users")).catch((err) => { console.log("err", err) })
     }
-    const onFailed = (data) =>{
+    const onFailed = (data) => {
         alert(Object.values(data)[0].message)
-        console.log(Object.values(data)[0].message)
     }
 
     return (
         <div className="w-[95%] m-[5%] mr-[5%] border border-grey-500">
-            <form className="w-full" onSubmit={handleSubmit(onSubmit,onFailed)}>
+            <form className="w-full" onSubmit={handleSubmit(onSubmit, onFailed)}>
+                {/* personal detailes fields */}
                 <div className="personalDetails p-4">
                     <h2 className="font-bold text-grey-900 tet-lg mb-6 underline ">Personal Details : </h2>
                     <div className=" flex flex-wrap -mx-3 mb-6 w-full justify-evenly">
@@ -82,6 +107,7 @@ function Form() {
                         </div>
                     </div>
                 </div>
+                {/* contact details fields */}
                 <div className="contactDetails p-4">
                     <h2 className="font-bold text-grey-900 tet-lg mb-6 underline ">Contact Details : </h2>
                     <div className=" flex flex-wrap -mx-3 mb-6 w-full justify-evenly">
@@ -104,6 +130,7 @@ function Form() {
                         </div>
                     </div>
                 </div>
+                {/* address details fields */}
                 <div className="addressdetails p-4">
                     <h2 className="font-bold text-grey-900 tet-lg mb-6 underline ">Address Details : </h2>
                     <div className=" flex flex-wrap -mx-3 mb-6 w-full justify-evenly">
@@ -132,6 +159,7 @@ function Form() {
                         </div>
                     </div>
                 </div>
+                {/* other details */}
                 <div className="otherDetails p-4">
                     <h2 className="font-bold text-grey-900 tet-lg mb-6 underline ">Other Details : </h2>
                     <div className=" flex flex-wrap -mx-3 mb-6 w-full justify-evenly">
@@ -177,9 +205,10 @@ function Form() {
                         </div>
                     </div>
                 </div>
+                {/* form related buttons */}
                 <div className="formButtons p-4">
                     <div className=" flex flex-wrap -mx-3 mb-6 w-full md:justify-end justify-center ml-5 mr-5">
-                        <button className=" ml-5 mr-5 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-black py-2 px-4 border border-red-500 hover:border-transparent rounded">Cancel</button>
+                        <button onClick={()=>{reset()}} className=" ml-5 mr-5 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-black py-2 px-4 border border-red-500 hover:border-transparent rounded">Cancel</button>
                         <input type="submit" className="mr-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" value="Submit" />
                     </div>
                 </div>
